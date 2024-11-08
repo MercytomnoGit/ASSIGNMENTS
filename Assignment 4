@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_LENGTH 200  // Maximum length of paragraph
+
+// Function to write to a file
+void writeToFile() {
+    FILE *file = fopen("output.txt", "w");
+    if (file == NULL) {
+        perror("Error opening file for writing");
+        exit(1);
+    }
+
+    char paragraph[MAX_LENGTH + 1];
+    printf("Enter a paragraph (up to 200 characters):\n");
+    fgets(paragraph, sizeof(paragraph), stdin);
+
+    if (fputs(paragraph, file) == EOF) {
+        perror("Error writing to file");
+        fclose(file);
+        exit(1);
+    }
+
+    printf("Paragraph written to 'output.txt'\n");
+    fclose(file);
+}
+
+// Function to append to a file
+void appendToFile() {
+    FILE *file = fopen("output.txt", "a");
+    if (file == NULL) {
+        perror("Error opening file for appending");
+        exit(1);
+    }
+
+    char paragraph[MAX_LENGTH + 1];
+    printf("Enter an additional paragraph to append (up to 200 characters):\n");
+    fgets(paragraph, sizeof(paragraph), stdin);
+
+    if (fputs(paragraph, file) == EOF) {
+        perror("Error appending to file");
+        fclose(file);
+        exit(1);
+    }
+
+    printf("Paragraph appended to 'output.txt'\n");
+    fclose(file);
+}
+
+// Function to read from a file and display content
+void readFromFile() {
+    FILE *file = fopen("output.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file for reading");
+        exit(1);
+    }
+
+    char ch;
+    printf("Contents of 'output.txt':\n");
+    while ((ch = fgetc(file)) != EOF) {
+        putchar(ch);
+    }
+
+    if (ferror(file)) {
+        perror("Error reading from file");
+        fclose(file);
+        exit(1);
+    }
+
+    fclose(file);
+}
+
+// Main function to handle user choices
+int main() {
+    int choice;
+    do {
+        printf("\nChoose an option:\n");
+        printf("1. Write a new paragraph to the file\n");
+        printf("2. Append a paragraph to the file\n");
+        printf("3. Display the file contents\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar();  // Consume newline left by scanf
+
+        switch (choice) {
+            case 1:
+                writeToFile();
+                break;
+            case 2:
+                appendToFile();
+                break;
+            case 3:
+                readFromFile();
+                break;
+            case 4:
+                printf("Exiting program.\n");
+                break;
+            default:
+                printf("Invalid choice, please try again.\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}
