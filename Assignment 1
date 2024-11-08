@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <string.h>
+
+// Define the Employee structure
+struct Employee {
+    int id;
+    char name[50];
+    float salary;
+};
+
+// Function to input data for employees
+void inputEmployeeData(struct Employee *emp) {
+    printf("Enter Employee ID: ");
+    scanf("%d", &emp->id);
+    getchar();  
+
+    printf("Enter Employee Name: ");
+    fgets(emp->name, sizeof(emp->name), stdin);
+    emp->name[strcspn(emp->name, "\n")] = '\0';  
+
+    printf("Enter Employee Salary: ");
+    scanf("%f", &emp->salary);
+}
+
+// Function to find the employee with the highest salary
+struct Employee findHighestSalary(struct Employee employees[], int n) {
+    struct Employee highest = employees[0];
+
+    for (int i = 1; i < n; i++) {
+        if (employees[i].salary > highest.salary) {
+            highest = employees[i];
+        }
+    }
+    return highest;
+}
+
+int main() {
+    struct Employee employees[3];
+
+    // Input data for each employee
+    printf("Enter details for 3 employees:\n");
+    for (int i = 0; i < 3; i++) {
+        printf("\nEmployee %d:\n", i + 1);
+        inputEmployeeData(&employees[i]);
+    }
+
+    // Find the employee with the highest salary
+    struct Employee highestSalaryEmployee = findHighestSalary(employees, 3);
+
+    // Display the employee with the highest salary
+    printf("\nEmployee with the highest salary:\n");
+    printf("ID: %d\n", highestSalaryEmployee.id);
+    printf("Name: %s\n", highestSalaryEmployee.name);
+    printf("Salary: %.2f\n", highestSalaryEmployee.salary);
+
+    return 0;
+}
