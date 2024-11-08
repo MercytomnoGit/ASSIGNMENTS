@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+struct Student {
+    char name[50];
+    int marks;
+};
+
+int main() {
+    struct Student students[5];
+    FILE *file = fopen("students.txt", "w");
+
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    printf("Enter name and marks of 5 students:\n");
+    for (int i = 0; i < 5; i++) {
+        printf("Student %d Name: ", i + 1);
+        scanf("%s", students[i].name);
+        printf("Student %d Marks: ", i + 1);
+        scanf("%d", &students[i].marks);
+
+        fprintf(file, "Name: %s, Marks: %d\n", students[i].name, students[i].marks);
+    }
+
+    printf("Data written to 'students.txt'.\n");
+    fclose(file);
+    return 0;
+}
